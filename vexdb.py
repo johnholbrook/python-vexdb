@@ -197,13 +197,107 @@ def getTeams(team=None,
 			result += urlToJSON("https://api.vexdb.io/v1/get_teams%s" % this_params)
 			current += 2000
 		return result
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
+	
+	
+def getNumMatches(sku=None,
+				  division=None,
+				  round=None,
+				  instance=None,
+				  matchnum=None,
+				  scheduled=None,
+				  field=None,
+				  team=None,
+				  scored=None,
+				  season=None):
+	"""Return the number of matches matching the given criteria"""
+	#build list of parameters to specify
+	#'nodata=true' tells the API to return the number of results
+	#rather than the results themselves
+	params = "?nodata=true&"
+	if sku != None:
+		params += "sku=%s&" % sku
+	if division != None:
+		params += "division=%s&" % division
+	if round != None:
+		params += "round=%s&" % division
+	if instance != None:
+		params += "instance=%s&" % instance
+	if matchnum != None:
+		params += "matchnum=%s&" % instance
+	if scheduled != None:
+		params += "scheduled=%s&" % scheduled
+	if field != None:
+		params += "field=%s&" % scheduled
+	if team != None:
+		params += "team=%s&" % team
+	if scored != None:
+		params += "scored=%s&" % scored
+	if season != None:
+		params += "season=%s&" % season
+	
+	return urlToSize("https://api.vexdb.io/v1/get_matches%s" % params)
+	
+def getMatches(sku=None,
+			   division=None,
+			   round=None,
+			   instance=None,
+			   matchnum=None,
+			   scheduled=None,
+			   field=None,
+			   team=None,
+			   scored=None,
+			   season=None,
+			   get_all=False):
+	"""Return a list of matches matching the given criteria.
+	
+	For sets of criteria that match a large number of matches (a few thousand or so),
+	a single request to the API will return only a limited number of results.
+	Passing get_all=True will ensure that all matching matches are returned by making 
+	multiple requests if necessary.
+	"""
+	#build list of parameters to specify
+	params = "?"
+	if sku != None:
+		params += "sku=%s&" % sku
+	if division != None:
+		params += "division=%s&" % division
+	if round != None:
+		params += "round=%s&" % round
+	if instance != None:
+		params += "instance=%s&" % instance
+	if matchnum != None:
+		params += "matchnum=%s&" % matchnum
+	if scheduled != None:
+		params += "scheduled=%s&" % scheduled
+	if field != None:
+		params += "field=%s&" % field
+	if team != None:
+		params += "team=%s&" % team
+	if scored != None:
+		params += "scored=%s&" % scored
+	if season != None:
+		params += "season=%s&" % season
+	
+	if not get_all:
+		return urlToJSON("https://api.vexdb.io/v1/get_matches%s" % params)
+	else:
+		num_matches = getNumMatches(sku, division, round, instance, matchnum, scheduled, field, team, scored, season)
+		result = []
+		current = 0
+		while (current < num_matches):
+			this_params = params + ("limit_start=%s&limit_number=2000" % current)
+			result += urlToJSON("https://api.vexdb.io/v1/get_matches%s" % this_params)
+			current += 2000
+		return result
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
