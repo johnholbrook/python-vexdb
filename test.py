@@ -1,5 +1,7 @@
 import vexdb as v
 
-# print v.getEventName("RE-VRC-18-7200")
+# print v.getTeams(team="8768A")[0]
 
-print v.getEvent(sku="RE-VRC-18-7200")
+print v.getNumTeams(country="United States")
+tmp = v.getTeams(country="United States", get_all=True)
+print tmp[3000]["team_name"]
