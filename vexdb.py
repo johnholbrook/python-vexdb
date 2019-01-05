@@ -219,15 +219,15 @@ def getNumMatches(sku=None,
 	if division != None:
 		params += "division=%s&" % division
 	if round != None:
-		params += "round=%s&" % division
+		params += "round=%s&" % round
 	if instance != None:
 		params += "instance=%s&" % instance
 	if matchnum != None:
-		params += "matchnum=%s&" % instance
+		params += "matchnum=%s&" % matchnum
 	if scheduled != None:
 		params += "scheduled=%s&" % scheduled
 	if field != None:
-		params += "field=%s&" % scheduled
+		params += "field=%s&" % field
 	if team != None:
 		params += "team=%s&" % team
 	if scored != None:
