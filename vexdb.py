@@ -5,7 +5,7 @@ import urllib, json
 def urlToJSON(url):
 	"""Makes a request to the specfied URL and returns a list of results.
 	"""
-	if type(url) != type("string"):
+	if type(url) not in [type("string"), type(u'unicode string')]:
 		raise TypeError("Parameter 'url' must be a string.")
 	result = json.loads(urllib.urlopen(url).read())
 	if (result["status"] == 1):
@@ -18,7 +18,7 @@ def urlToSize(url):
 	
 	Useful mostly when making calls with the 'nodata' perameter set to true.
 	"""
-	if type(url) != type("string"):
+	if type(url) not in [type("string"), type(u'unicode string')]:
 		raise TypeError("Parameter 'url' must be a string.")
 	result = json.loads(urllib.urlopen(url).read())
 	if (result["status"] == 1):
