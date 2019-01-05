@@ -407,11 +407,61 @@ def getSeasonRankings(program=None,
 			current += 2000
 		return result
 	
+def getNumAwards(sku=None,
+				 name=None,
+				 team=None,
+				 season=None):
+	"""Return the number of season rankings matching the given criteria"""
+	#build list of parameters to specify
+	#'nodata=true' tells the API to return the number of results
+	#rather than the results themselves
+	params = "?nodata=true&"
+	if sku != None:
+		params += "sku=%s&" % sku
+	if name != None:
+		params += "name=%s&" % name
+	if team != None:
+		params += "team=%s&" % team
+	if season != None:
+		params += "season=%s&" % season
 	
+	return urlToSize("https://api.vexdb.io/v1/get_awards%s" % params)
 	
+def getAwards(sku=None,
+			  name=None,
+			  team=None,
+			  season=None,
+			  get_all=False):
+	"""Return a list of awards matching the given criteria.
 	
+	For sets of criteria that match a large number of awards (a few thousand or so),
+	a single request to the API will return only a limited number of results.
+	Passing get_all=True will ensure that all matching awards are returned by making 
+	multiple requests if necessary.
+	"""
 	
+	#build list of parameters to specify
+	params = "?"
+	if sku != None:
+		params += "sku=%s&" % sku
+	if name != None:
+		params += "name=%s&" % name
+	if team != None:
+		params += "team=%s&" % team
+	if season != None:
+		params += "season=%s&" % season
 	
+	if not get_all:
+		return urlToJSON("https://api.vexdb.io/v1/get_awards%s" % params)
+	else:
+		num_awards = getNumAwards(sku, name, team, season)
+		result = []
+		current = 0
+		while (current < num_awards):
+			this_params = params + ("limit_start=%s&limit_number=2000" % current)
+			result += urlToJSON("https://api.vexdb.io/v1/get_awards%s" % this_params)
+			current += 2000
+		return result
 	
 	
 	

@@ -1,7 +1,7 @@
 import vexdb as v
 
-tmp = v.getSeasonRankings(vrating_rank=1)
+tmp = v.getAwards(season="In The Zone", get_all=True)
 
-for r in tmp:
-# 	team = v.getTeams(team=r["team"])[0]
-	print "%s: %s(vRating %s)" % (r["season"], r["team"], r["vrating"])
+print len(tmp)
+
+print tmp[3000]
