@@ -351,7 +351,68 @@ def getRankings(sku=None,
 			current += 2000
 		return result
 	
-
+def getNumSeasonRankings(program=None,
+						 season=None,
+						 team=None,
+						 vrating_rank=None):
+	"""Return the number of season rankings matching the given criteria"""
+	#build list of parameters to specify
+	#'nodata=true' tells the API to return the number of results
+	#rather than the results themselves
+	params="?nodata=true&"
+	if program != None:
+		params += "program=%s&" % program
+	if season != None:
+		params += "season=%s&" % season
+	if team != None:
+		params += "team=%s&" % team
+	if vrating_rank != None:
+		params += "vrating_rank=%s&" % vrating_rank
+	
+	return urlToSize("https://api.vexdb.io/v1/get_season_rankings%s" % params)
+	
+def getSeasonRankings(program=None,
+						 season=None,
+						 team=None,
+						 vrating_rank=None,
+						 get_all=False):
+	"""Return a list of season rankings matching the given criteria.
+	
+	For sets of criteria that match a large number of season rankings (a few thousand or so),
+	a single request to the API will return only a limited number of results.
+	Passing get_all=True will ensure that all matching season rankings are returned by making 
+	multiple requests if necessary.
+	"""
+	
+	#build list of parameters to specify
+	params="?"
+	if program != None:
+		params += "program=%s&" % program
+	if season != None:
+		params += "season=%s&" % season
+	if team != None:
+		params += "team=%s&" % team
+	if vrating_rank != None:
+		params += "vrating_rank=%s&" % vrating_rank
+	
+	if not get_all:
+		return urlToJSON("https://api.vexdb.io/v1/get_season_rankings%s" % params)
+	else:
+		num_season_rankings = getNumSeasonRankings(sku, division, rank, team, season)
+		result = []
+		current = 0
+		while (current < num_season_rankings):
+			this_params = params + ("limit_start=%s&limit_number=2000" % current)
+			result += urlToJSON("https://api.vexdb.io/v1/get_season_rankings%s" % this_params)
+			current += 2000
+		return result
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

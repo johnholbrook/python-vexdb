@@ -1,15 +1,7 @@
 import vexdb as v
 
-n = v.getNumRankings(rank=1)
-print n
-tmp = v.getRankings(rank=1, get_all=True)
+tmp = v.getSeasonRankings(vrating_rank=1)
 
-sum = 0.0
-for ranking in tmp:
-	numMatches = ranking["wins"] + ranking["losses"] + ranking["ties"]
-	if numMatches != 0:
-		sum += ranking["wins"]/numMatches
-	else:
-		n -= 1
-	
-print sum/n
+for r in tmp:
+# 	team = v.getTeams(team=r["team"])[0]
+	print "%s: %s(vRating %s)" % (r["season"], r["team"], r["vrating"])
