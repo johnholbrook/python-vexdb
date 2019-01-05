@@ -463,6 +463,99 @@ def getAwards(sku=None,
 			current += 2000
 		return result
 	
+def getNumSkills(sku=None,
+				 program=None,
+				 type=None,
+				 team=None,
+				 season=None,
+				 season_rank=None,
+				 rank=None):
+	"""Return the number of skills records matching the given criteria"""
+	#build list of parameters to specify
+	#'nodata=true' tells the API to return the number of results
+	#rather than the results themselves
+	params = "?nodata=true&"
+	if sku != None:
+		params += "sku=%s&" % sku
+	if program != None:
+		params += "program=%s&" % program
+	if type != None:
+		params += "type=%s&" % type
+	if team != None:
+		params += "team=%s&" % team
+	if season != None:
+		params += "season=%s&" % season
+	if season_rank != None:
+		if season_rank == True:
+			#API is case-sensitive; this check allows for passing a boolean value
+			#in addition to the string "true"
+			params += "season_rank=true&"
+		else:
+			params += "season_rank=%s&" % season_rank
+	if rank != None:
+		params += "rank=%s&" % rank
+	
+	return urlToSize("https://api.vexdb.io/v1/get_skills%s" % params)
+	
+def getSkills(sku=None,
+			  program=None,
+			  type=None,
+			  team=None,
+			  season=None,
+			  season_rank=None,
+			  rank=None,
+			  get_all=False):
+	"""Return a list of skills records matching the given criteria.
+	
+	For sets of criteria that match a large number of skills records (a few thousand or so),
+	a single request to the API will return only a limited number of results.
+	Passing get_all=True will ensure that all matching skills records are returned by making 
+	multiple requests if necessary.
+	"""
+	#build list of parameters to specify
+	params = "?"
+	if sku != None:
+		params += "sku=%s&" % sku
+	if program != None:
+		params += "program=%s&" % program
+	if type != None:
+		params += "type=%s&" % type
+	if team != None:
+		params += "team=%s&" % team
+	if season != None:
+		params += "season=%s&" % season
+	if season_rank != None:
+		if season_rank == True:
+			#API is case-sensitive; this check allows for passing a boolean value
+			#in addition to the string "true"
+			params += "season_rank=true&"
+		else:
+			params += "season_rank=%s&" % season_rank
+	if rank != None:
+		params += "rank=%s&" % rank
+	
+	if not get_all:
+		return urlToJSON("https://api.vexdb.io/v1/get_skills%s" % params)
+	else:
+		num_skills = getNumSkills(sku, program, type, team, seacon, season_rank, rank)
+		result = []
+		current = 0
+		while (current < num_skills):
+			this_params = params + ("limit_start=%s&limit_number=2000" % current)
+			result += urlToJSON("https://api.vexdb.io/v1/get_skills%s" % this_params)
+			current += 2000
+		return result
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

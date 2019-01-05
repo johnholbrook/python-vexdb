@@ -1,7 +1,6 @@
 import vexdb as v
 
-tmp = v.getAwards(season="In The Zone", get_all=True)
+tmp = v.getSkills(team="8768A", season="In The Zone")
 
-print len(tmp)
-
-print tmp[3000]
+for sr in tmp:
+	print "Score: %s" % sr["score"]
