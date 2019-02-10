@@ -2,12 +2,14 @@
 A thin python wrapper for the VexDB API.
 
 ## Installation
-Download `vexdb.py` and/or `vexdb.pyc` and place it/them in your per-user site-packages directory, 
+Download `vexdb.py` and place it in your per-user site-packages directory, 
 the location of which can be found by running `python -m site --user-site`.
 
 Then, `import vexdb` to get access to the functions in the package.
 
 python-vexdb requires the `urllib` and `json` modules, both of which should have come with your version of python.
+
+(Installation via pip hopefully coming soon!)
 
 ## Functions
 python-vexdb provides two functions for each of the data types listed at https://vexdb.io/the_data, where `DataType`
