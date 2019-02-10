@@ -2,7 +2,7 @@
 
 import urllib, json
 
-def urlToJSON(url):
+def _urlToJSON(url):
 	"""Makes a request to the specfied URL and returns a list of results.
 	"""
 	if type(url) not in [type("string"), type(u'unicode string')]:
@@ -13,7 +13,7 @@ def urlToJSON(url):
 	else:
 		raise RuntimeError("VexDB Server Error: %s" % result["error_text"])
 
-def urlToSize(url):
+def _urlToSize(url):
 	"""Makes a request to the specfied URL and returns the number of results.
 	
 	Useful mostly when making calls with the 'nodata' perameter set to true.
@@ -25,6 +25,17 @@ def urlToSize(url):
 		return result["size"]
 	else:
 		raise RuntimeError("VexDB Server Error: %s" % result["error_text"])
+
+def _buildParams(userInput):
+	""" Takes a dictionary of user-inputted paramaters, where the keys are the names
+	of the parameters in the URL and the values are either None or the value of the parameters
+	in the URL."""
+	params = "?"
+	for key, value in userInput.items():
+		if value != None:
+			params += "%s=%s&" % (key, value)
+	return params
+
 
 def getNumEvents(sku=None,
 			 	 program=None,
@@ -41,27 +52,10 @@ def getNumEvents(sku=None,
 	#build list of parameters to specify
 	#'nodata=true' tells the API to return the number of results
 	#rather than the results themselves
-	params = "?nodata=true&"
-	if (sku != None):
-		params += "sku=%s&" % sku
-	if (program != None):
-		params += "program=%s&" % program
-	if (date != None):
-		params += "date=%s&" % date
-	if (season != None):
-		params += "season=%s&" % season
-	if (city != None):
-		params += "city=%s&" % city
-	if (region != None):
-		params += "region=%s&" % region
-	if (country != None):
-		params += "country=%s&" % country
-	if (team != None):
-		params += "team=%s&" % team
-	if (status != None):
-		params += "status=%s&" % status
+	params = _buildParams({"nodata":"true", "sku":sku, "program":program, "date":date, "season":season,
+	"city":city, "region":region, "country":country, "team":team, "status":status})
 
-	return urlToSize("https://api.vexdb.io/v1/get_events%s" % params)
+	return _urlToSize("https://api.vexdb.io/v1/get_events%s" % params)
 
 def getEvents(sku=None,
 			 program=None,
@@ -81,35 +75,18 @@ def getEvents(sku=None,
 	multiple requests if necessary.
 	"""
 	#build list of parameters to specify
-	params = "?"
-	if (sku != None):
-		params += "sku=%s&" % sku
-	if (program != None):
-		params += "program=%s&" % program
-	if (date != None):
-		params += "date=%s&" % date
-	if (season != None):
-		params += "season=%s&" % season
-	if (city != None):
-		params += "city=%s&" % city
-	if (region != None):
-		params += "region=%s&" % region
-	if (country != None):
-		params += "country=%s&" % country
-	if (team != None):
-		params += "team=%s&" % team
-	if (status != None):
-		params += "status=%s&" % status
+	params = _buildParams({"sku":sku, "program":program, "date":date, "season":season,
+	"city":city, "region":region, "country":country, "team":team, "status":status})
 
 	if not get_all:
-		return urlToJSON("https://api.vexdb.io/v1/get_events%s" % params)
+		return _urlToJSON("https://api.vexdb.io/v1/get_events%s" % params)
 	else:
 		num_events = getNumEvents(sku, program, date, season, city, region, country, team, status)
 		result = []
 		current = 0
 		while (current < num_events):
 			this_params = params + ("limit_start=%s&limit_number=2000" % current)
-			result += urlToJSON("https://api.vexdb.io/v1/get_events%s" % this_params)
+			result += _urlToJSON("https://api.vexdb.io/v1/get_events%s" % this_params)
 			current += 2000
 		return result
 
@@ -126,27 +103,11 @@ def getNumTeams(team=None,
 	#build list of parameters to specify
 	#'nodata=true' tells the API to return the number of results
 	#rather than the results themselves
-	params = "?nodata=true&"
-	if team != None:
-		params += "team=%s&" % team
-	if program != None:
-		params += "program=%s&" % program
-	if organisation != None:
-		params += "organisation=%s&" % organisation
-	if city != None:
-		params += "city=%s&" % city
-	if region != None:
-		params += "region=%s&" % region
-	if country != None:
-		params += "country=%s&" % country
-	if grade != None:
-		params += "grade=%s&" % grade
-	if is_registered != None:
-		params += "is_registered=%s&" % is_registered
-	if sku != None:
-		params += "sku=%s&" % sku
-		
-	return urlToSize("https://api.vexdb.io/v1/get_teams%s" % params)
+	params = _buildParams({"nodata":"true", "team":team, "program":program, "organisation":organisation,
+		"city":city, "region":region, "country":country, "grade":grade, "is_registered":is_registered,
+		"sku":sku})
+
+	return _urlToSize("https://api.vexdb.io/v1/get_teams%s" % params)
 				
 def getTeams(team=None,
 			 program=None,
@@ -166,35 +127,19 @@ def getTeams(team=None,
 	multiple requests if necessary.
 	"""
 	#build list of parameters to specify
-	params = "?"
-	if team != None:
-		params += "team=%s&" % team
-	if program != None:
-		params += "program=%s&" % program
-	if organisation != None:
-		params += "organisation=%s&" % organisation
-	if city != None:
-		params += "city=%s&" % city
-	if region != None:
-		params += "region=%s&" % region
-	if country != None:
-		params += "country=%s&" % country
-	if grade != None:
-		params += "grade=%s&" % grade
-	if is_registered != None:
-		params += "is_registered=%s&" % is_registered
-	if sku != None:
-		params += "sku=%s&" % sku
+	params = _buildParams({"team":team, "program":program, "organisation":organisation,
+		"city":city, "region":region, "country":country, "grade":grade, "is_registered":is_registered,
+		"sku":sku})
 		
 	if not get_all:
-		return urlToJSON("https://api.vexdb.io/v1/get_teams%s" % params)
+		return _urlToJSON("https://api.vexdb.io/v1/get_teams%s" % params)
 	else:
 		num_teams = getNumTeams(team, program, organisation, city, region, country, grade, is_registered, sku)
 		result = []
 		current = 0
 		while (current < num_teams):
 			this_params = params + ("limit_start=%s&limit_number=2000" % current)
-			result += urlToJSON("https://api.vexdb.io/v1/get_teams%s" % this_params)
+			result += _urlToJSON("https://api.vexdb.io/v1/get_teams%s" % this_params)
 			current += 2000
 		return result
 	
@@ -213,29 +158,10 @@ def getNumMatches(sku=None,
 	#build list of parameters to specify
 	#'nodata=true' tells the API to return the number of results
 	#rather than the results themselves
-	params = "?nodata=true&"
-	if sku != None:
-		params += "sku=%s&" % sku
-	if division != None:
-		params += "division=%s&" % division
-	if round != None:
-		params += "round=%s&" % round
-	if instance != None:
-		params += "instance=%s&" % instance
-	if matchnum != None:
-		params += "matchnum=%s&" % matchnum
-	if scheduled != None:
-		params += "scheduled=%s&" % scheduled
-	if field != None:
-		params += "field=%s&" % field
-	if team != None:
-		params += "team=%s&" % team
-	if scored != None:
-		params += "scored=%s&" % scored
-	if season != None:
-		params += "season=%s&" % season
-	
-	return urlToSize("https://api.vexdb.io/v1/get_matches%s" % params)
+	params = _buildParams({"nodata":"true", "sku":sku, "division":division, "round":round, "instance":instance,
+		"matchnum":matchnum, "scheduled":scheduled, "field":field, "team":team, "scored":scored, "season":season})
+
+	return _urlToSize("https://api.vexdb.io/v1/get_matches%s" % params)
 	
 def getMatches(sku=None,
 			   division=None,
@@ -256,37 +182,18 @@ def getMatches(sku=None,
 	multiple requests if necessary.
 	"""
 	#build list of parameters to specify
-	params = "?"
-	if sku != None:
-		params += "sku=%s&" % sku
-	if division != None:
-		params += "division=%s&" % division
-	if round != None:
-		params += "round=%s&" % round
-	if instance != None:
-		params += "instance=%s&" % instance
-	if matchnum != None:
-		params += "matchnum=%s&" % matchnum
-	if scheduled != None:
-		params += "scheduled=%s&" % scheduled
-	if field != None:
-		params += "field=%s&" % field
-	if team != None:
-		params += "team=%s&" % team
-	if scored != None:
-		params += "scored=%s&" % scored
-	if season != None:
-		params += "season=%s&" % season
-	
+	params = _buildParams({"sku":sku, "division":division, "round":round, "instance":instance,
+		"matchnum":matchnum, "scheduled":scheduled, "field":field, "team":team, "scored":scored, "season":season})
+
 	if not get_all:
-		return urlToJSON("https://api.vexdb.io/v1/get_matches%s" % params)
+		return _urlToJSON("https://api.vexdb.io/v1/get_matches%s" % params)
 	else:
 		num_matches = getNumMatches(sku, division, round, instance, matchnum, scheduled, field, team, scored, season)
 		result = []
 		current = 0
 		while (current < num_matches):
 			this_params = params + ("limit_start=%s&limit_number=2000" % current)
-			result += urlToJSON("https://api.vexdb.io/v1/get_matches%s" % this_params)
+			result += _urlToJSON("https://api.vexdb.io/v1/get_matches%s" % this_params)
 			current += 2000
 		return result
 	
@@ -300,19 +207,9 @@ def getNumRankings(sku=None,
 	#build list of parameters to specify
 	#'nodata=true' tells the API to return the number of results
 	#rather than the results themselves
-	params="?nodata=true&"
-	if sku != None:
-		params += "sku=%s&" % sku
-	if division != None:
-		params += "division=%s&" % division
-	if rank != None:
-		params += "rank=%s&" % rank
-	if team != None:
-		params += "team=%s&" % team
-	if season != None:
-		params += "season=%s&" % season
+	params = _buildParams({"nodata":"true", "sku":sku, "rank":rank, "team":team, "season":season})
 		
-	return urlToSize("https://api.vexdb.io/v1/get_rankings%s" % params)
+	return _urlToSize("https://api.vexdb.io/v1/get_rankings%s" % params)
 	
 def getRankings(sku=None,
 				division=None,
@@ -327,27 +224,18 @@ def getRankings(sku=None,
 	Passing get_all=True will ensure that all matching rankings are returned by making 
 	multiple requests if necessary.
 	"""
-	params="?"
-	if sku != None:
-		params += "sku=%s&" % sku
-	if division != None:
-		params += "division=%s&" % division
-	if rank != None:
-		params += "rank=%s&" % rank
-	if team != None:
-		params += "team=%s&" % team
-	if season != None:
-		params += "season=%s&" % season
+
+	params = _buildParams({"sku":sku, "rank":rank, "team":team, "season":season})
 	
 	if not get_all:
-		return urlToJSON("https://api.vexdb.io/v1/get_rankings%s" % params)
+		return _urlToJSON("https://api.vexdb.io/v1/get_rankings%s" % params)
 	else:
 		num_rankings = getNumRankings(sku, division, rank, team, season)
 		result = []
 		current = 0
 		while (current < num_rankings):
 			this_params = params + ("limit_start=%s&limit_number=2000" % current)
-			result += urlToJSON("https://api.vexdb.io/v1/get_rankings%s" % this_params)
+			result += _urlToJSON("https://api.vexdb.io/v1/get_rankings%s" % this_params)
 			current += 2000
 		return result
 	
@@ -359,17 +247,11 @@ def getNumSeasonRankings(program=None,
 	#build list of parameters to specify
 	#'nodata=true' tells the API to return the number of results
 	#rather than the results themselves
-	params="?nodata=true&"
-	if program != None:
-		params += "program=%s&" % program
-	if season != None:
-		params += "season=%s&" % season
-	if team != None:
-		params += "team=%s&" % team
-	if vrating_rank != None:
-		params += "vrating_rank=%s&" % vrating_rank
+
+	params = _buildParams({"nodata":"true", "program":program, "season":season, 
+		"team":team, "vrating_rank":vrating_rank})
 	
-	return urlToSize("https://api.vexdb.io/v1/get_season_rankings%s" % params)
+	return _urlToSize("https://api.vexdb.io/v1/get_season_rankings%s" % params)
 	
 def getSeasonRankings(program=None,
 						 season=None,
@@ -385,25 +267,17 @@ def getSeasonRankings(program=None,
 	"""
 	
 	#build list of parameters to specify
-	params="?"
-	if program != None:
-		params += "program=%s&" % program
-	if season != None:
-		params += "season=%s&" % season
-	if team != None:
-		params += "team=%s&" % team
-	if vrating_rank != None:
-		params += "vrating_rank=%s&" % vrating_rank
+	params = _buildParams({"program":program, "season":season, "team":team, "vrating_rank":vrating_rank})
 	
 	if not get_all:
-		return urlToJSON("https://api.vexdb.io/v1/get_season_rankings%s" % params)
+		return _urlToJSON("https://api.vexdb.io/v1/get_season_rankings%s" % params)
 	else:
 		num_season_rankings = getNumSeasonRankings(sku, division, rank, team, season)
 		result = []
 		current = 0
 		while (current < num_season_rankings):
 			this_params = params + ("limit_start=%s&limit_number=2000" % current)
-			result += urlToJSON("https://api.vexdb.io/v1/get_season_rankings%s" % this_params)
+			result += _urlToJSON("https://api.vexdb.io/v1/get_season_rankings%s" % this_params)
 			current += 2000
 		return result
 	
@@ -415,17 +289,10 @@ def getNumAwards(sku=None,
 	#build list of parameters to specify
 	#'nodata=true' tells the API to return the number of results
 	#rather than the results themselves
-	params = "?nodata=true&"
-	if sku != None:
-		params += "sku=%s&" % sku
-	if name != None:
-		params += "name=%s&" % name
-	if team != None:
-		params += "team=%s&" % team
-	if season != None:
-		params += "season=%s&" % season
-	
-	return urlToSize("https://api.vexdb.io/v1/get_awards%s" % params)
+
+	params = _buildParams({"nodata":"true", "sku":sku, "name":name, "team":team, "season":season})
+
+	return _urlToSize("https://api.vexdb.io/v1/get_awards%s" % params)
 	
 def getAwards(sku=None,
 			  name=None,
@@ -441,25 +308,17 @@ def getAwards(sku=None,
 	"""
 	
 	#build list of parameters to specify
-	params = "?"
-	if sku != None:
-		params += "sku=%s&" % sku
-	if name != None:
-		params += "name=%s&" % name
-	if team != None:
-		params += "team=%s&" % team
-	if season != None:
-		params += "season=%s&" % season
-	
+	params = _buildParams({"sku":sku, "name":name, "team":team, "season":season})
+
 	if not get_all:
-		return urlToJSON("https://api.vexdb.io/v1/get_awards%s" % params)
+		return _urlToJSON("https://api.vexdb.io/v1/get_awards%s" % params)
 	else:
 		num_awards = getNumAwards(sku, name, team, season)
 		result = []
 		current = 0
 		while (current < num_awards):
 			this_params = params + ("limit_start=%s&limit_number=2000" % current)
-			result += urlToJSON("https://api.vexdb.io/v1/get_awards%s" % this_params)
+			result += _urlToJSON("https://api.vexdb.io/v1/get_awards%s" % this_params)
 			current += 2000
 		return result
 	
@@ -474,28 +333,11 @@ def getNumSkills(sku=None,
 	#build list of parameters to specify
 	#'nodata=true' tells the API to return the number of results
 	#rather than the results themselves
-	params = "?nodata=true&"
-	if sku != None:
-		params += "sku=%s&" % sku
-	if program != None:
-		params += "program=%s&" % program
-	if type != None:
-		params += "type=%s&" % type
-	if team != None:
-		params += "team=%s&" % team
-	if season != None:
-		params += "season=%s&" % season
-	if season_rank != None:
-		if season_rank == True:
-			#API is case-sensitive; this check allows for passing a boolean value
-			#in addition to the string "true"
-			params += "season_rank=true&"
-		else:
-			params += "season_rank=%s&" % season_rank
-	if rank != None:
-		params += "rank=%s&" % rank
 	
-	return urlToSize("https://api.vexdb.io/v1/get_skills%s" % params)
+	params = _buildParams({"nodata":"true", "sku":sku, "program":program, "type":type, "team":team,
+		"season":season, "season_rank":season_rank, "rank":rank})
+	
+	return _urlToSize("https://api.vexdb.io/v1/get_skills%s" % params)
 	
 def getSkills(sku=None,
 			  program=None,
@@ -513,50 +355,19 @@ def getSkills(sku=None,
 	multiple requests if necessary.
 	"""
 	#build list of parameters to specify
-	params = "?"
-	if sku != None:
-		params += "sku=%s&" % sku
-	if program != None:
-		params += "program=%s&" % program
-	if type != None:
-		params += "type=%s&" % type
-	if team != None:
-		params += "team=%s&" % team
-	if season != None:
-		params += "season=%s&" % season
-	if season_rank != None:
-		if season_rank == True:
-			#API is case-sensitive; this check allows for passing a boolean value
-			#in addition to the string "true"
-			params += "season_rank=true&"
-		else:
-			params += "season_rank=%s&" % season_rank
-	if rank != None:
-		params += "rank=%s&" % rank
+	params = _buildParams({"sku":sku, "program":program, "type":type, "team":team,
+		"season":season, "season_rank":season_rank, "rank":rank})
 	
 	if not get_all:
-		return urlToJSON("https://api.vexdb.io/v1/get_skills%s" % params)
+		return _urlToJSON("https://api.vexdb.io/v1/get_skills%s" % params)
 	else:
 		num_skills = getNumSkills(sku, program, type, team, seacon, season_rank, rank)
 		result = []
 		current = 0
 		while (current < num_skills):
 			this_params = params + ("limit_start=%s&limit_number=2000" % current)
-			result += urlToJSON("https://api.vexdb.io/v1/get_skills%s" % this_params)
+			result += _urlToJSON("https://api.vexdb.io/v1/get_skills%s" % this_params)
 			current += 2000
 		return result
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		
