@@ -1,0 +1,6 @@
+README.md
+setup.py
+vexdb.egg-info/PKG-INFO
+vexdb.egg-info/SOURCES.txt
+vexdb.egg-info/dependency_links.txt
+vexdb.egg-info/top_level.txt
