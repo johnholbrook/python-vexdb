@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: vexdb
-Version: 1.0.11
+Version: 1.0.13
 Summary: A thin python wrapper for the vexDB API
 Home-page: https://github.com/dhmmjoph/python-vexdb
 Author: John Holbrook
@@ -10,10 +10,9 @@ Description: # python-vexdb
         A thin python wrapper for the VexDB API.
         
         ## Installation
-        Install with pip: `pip install vexdb`.
+        NOTE: python-vexdb is only compatible with Python 3!
         
-        Or, manually place `vexdb.py` in your per-user site-packages directory, 
-        the location of which can be found by running `python -m site --user-site`.
+        Install with pip: `pip install vexdb`.
         
         Then, `import vexdb` to get access to the functions in the package.
         

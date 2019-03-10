@@ -2,10 +2,9 @@
 A thin python wrapper for the VexDB API.
 
 ## Installation
-Install with pip: `pip install vexdb`.
+NOTE: python-vexdb is only compatible with Python 3!
 
-Or, manually place `vexdb.py` in your per-user site-packages directory, 
-the location of which can be found by running `python -m site --user-site`.
+Install with pip: `pip install vexdb`.
 
 Then, `import vexdb` to get access to the functions in the package.
 

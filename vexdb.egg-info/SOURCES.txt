@@ -2,7 +2,6 @@ README.md
 setup.py
 vexdb/__init__.py
 vexdb/__main__.py
-vexdb/vexdb.py
 vexdb.egg-info/PKG-INFO
 vexdb.egg-info/SOURCES.txt
 vexdb.egg-info/dependency_links.txt
