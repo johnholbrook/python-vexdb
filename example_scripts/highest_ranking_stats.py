@@ -9,7 +9,7 @@ from __future__ import print_function
 import vexdb as v
 
 num_rankings = v.getNumRankings()
-print("Getting data for all %s rankings" % num_rankings)
+print("Getting data for all %s rankings (This will take quite a while)" % num_rankings)
 all_rankings = v.getRankings(get_all=True)
 # all_rankings = v.getRankings(season="In The Zone")
 

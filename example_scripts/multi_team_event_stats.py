@@ -1,8 +1,7 @@
-# Displays information about one or more teams at a given event
+# Displays performance information about one or more teams at a given event
 # (in this case, teams from WV at the "Night at the Museum" 
 # signature event)
 
-from __future__ import print_function
 import vexdb as v
 
 event_sku = "RE-VRC-18-6207"

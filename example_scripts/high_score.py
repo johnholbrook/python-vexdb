@@ -2,7 +2,6 @@
 #as well as the highest match score in the current season in
 #West Virginia
 
-from __future__ import print_function
 import vexdb as v
 
 num_rankings = v.getNumRankings(season="current")

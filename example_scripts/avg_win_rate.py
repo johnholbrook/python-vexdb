@@ -1,6 +1,5 @@
 #Computes the average win rate of all #1 seeds across all tournaments ever
 
-from __future__ import print_function
 import vexdb as v
 
 num_top_seeds = v.getNumRankings(rank=1)
