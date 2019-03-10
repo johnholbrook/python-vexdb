@@ -53,7 +53,7 @@ def _buildParams(userInput):
 	params = "?"
 	for key, value in userInput.items():
 		if value != None:
-			params += "%s=%s&" % (key, quote(value))
+			params += "%s=%s&" % (key, quote(str(value)))
 	return params
 
 
