@@ -3,7 +3,7 @@
 from __future__ import print_function
 import vexdb as v
 
-wv_tp_events = v.getEvents(season="current", region="West Virginia")
+wv_tp_events = v.getEvents(season="Turning Point", region="West Virginia")
 wv_itz_events = v.getEvents(season="In The Zone", region="West Virginia")
 
 tp_matches = 0
