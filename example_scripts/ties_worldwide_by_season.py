@@ -71,7 +71,7 @@ for event in sr_events:
 		    sr_ties += 1
 print("Skyrise: %s ties from %s matches (%s %%)" % (sr_ties, sr_matches, (100.0*float(sr_ties)/sr_matches)))
 
-tu_events = v.getEvents(season="Turning Point", get_all=True)
+tu_events = v.getEvents(season="Toss Up", get_all=True)
 tu_matches = 0
 tu_ties = 0
 for event in tu_events:
