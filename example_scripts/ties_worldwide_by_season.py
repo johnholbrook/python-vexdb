@@ -1,4 +1,4 @@
-# Calculates the frequency of tied matches at events in WV in each of the last two seasons.
+# Calculates the frequency of tied matches at events worldwide from Sack Attach to Tower Takeover
 
 from __future__ import print_function
 import vexdb as v
