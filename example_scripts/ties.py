@@ -24,5 +24,5 @@ for event in wv_itz_events:
 		if match["redscore"] == match["bluescore"]:
 			itz_ties += 1
 
-print("In The Zone: %s ties from %s matches (%s %%)" % (itz_ties, itz_matches, (100.0*float(itz_ties)/itz_matches)))
-print("Turning Point: %s ties from %s matches (%s %%)" % (tp_ties, tp_matches, (100.0*float(tp_ties)/tp_matches)))
+print("In The Zone: {} ties from {} matches ({} %)".format(itz_ties, itz_matches, (100.0*float(itz_ties)/itz_matches)))
+print("Turning Point: {} ties from {} matches ({} %)".format(tp_ties, tp_matches, (100.0*float(tp_ties)/tp_matches)))
