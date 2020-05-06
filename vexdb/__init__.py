@@ -381,7 +381,7 @@ def getSkills(sku=None,
 	if not get_all:
 		return _urlToJSON("http://api.vexdb.io/v1/get_skills%s" % params)
 	else:
-		num_skills = getNumSkills(sku, program, type, team, seacon, season_rank, rank)
+		num_skills = getNumSkills(sku, program, type, team, season, season_rank, rank)
 		result = []
 		current = 0
 		while (current < num_skills):
