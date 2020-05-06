@@ -292,7 +292,7 @@ def getSeasonRankings(program=None,
 	if not get_all:
 		return _urlToJSON("http://api.vexdb.io/v1/get_season_rankings%s" % params)
 	else:
-		num_season_rankings = getNumSeasonRankings(sku, division, rank, team, season)
+		num_season_rankings = getNumSeasonRankings(program, season,  team, vrating_rank)
 		result = []
 		current = 0
 		while (current < num_season_rankings):
