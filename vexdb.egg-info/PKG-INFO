@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: vexdb
-Version: 1.0.14
+Version: 1.0.15
 Summary: A thin python wrapper for the vexDB API
 Home-page: https://github.com/dhmmjoph/python-vexdb
 Author: John Holbrook

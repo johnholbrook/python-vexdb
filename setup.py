@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="vexdb",
-    version="1.0.14",
+    version="1.0.15",
     author="John Holbrook",
     author_email="contact@johnholbrook.us",
     description="A thin python wrapper for the vexDB API",
